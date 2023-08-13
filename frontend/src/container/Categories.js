@@ -77,6 +77,8 @@ const Categories = () => {
             <Typography gutterBottom variant="h3" align="center">
                 Categories
             </Typography>
+            <Button onClick={() => navigate('/admin/user/added')}
+                    color="inherit">New Category</Button>
             <div style={{height: 400, width: '100%'}}>
                 {isLoading ?
                     <Ring

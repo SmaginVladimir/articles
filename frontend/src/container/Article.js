@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {alpha, Container, Grid, InputBase, styled} from "@mui/material";
+import {alpha, Container, Grid, InputBase, Pagination, Stack, styled} from "@mui/material";
 import ArticleCard from "../components/ArticleCard";
 import {Ring} from "@uiball/loaders";
 import {API_BASE_URL, INSTANCE} from "../config";
@@ -57,17 +57,27 @@ const Article = () => {
     const [articles, setArticles] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [search, setSearch] = useState('');
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
 
 
     useEffect(() => {
-        void addArticles();
-    }, []);
+        void addArticles(currentPage);
+    }, [currentPage]);
 
-    const addArticles = useCallback(async () => {
+    const addArticles = useCallback(async (page) => {
         try {
             setIsLoading(true);
-            const response = await INSTANCE.get(API_BASE_URL + '/articles/all');
+            const response = await INSTANCE.get(API_BASE_URL + '/articles/9', {
+                params: {
+                    page: page
+                }
+            });
+            const meta = response.data.meta;
+            const totalPages = meta.last_page;
             setArticles(response.data.data);
+            setCurrentPage(meta.current_page);
+            setTotalPages(totalPages);
             setIsLoading(false);
         } catch (e) {
             setIsLoading(true);
@@ -132,6 +142,14 @@ const Article = () => {
                         </Grid>
                     }
                 </div>
+                {totalPages > 1 && (
+                    <Pagination className={'page'}
+                                variant="outlined" shape="rounded"
+                                count={totalPages}
+                                page={currentPage}
+                                onChange={(event, value) => setCurrentPage(value)}
+                    />
+                )}
             </Container>
         </div>
     );

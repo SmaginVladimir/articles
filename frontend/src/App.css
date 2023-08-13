@@ -56,3 +56,11 @@
     margin-top: 0;
 }
 
+.page {
+    margin-top: 70px;
+    margin-bottom: 170px;
+}
+
+.css-wjh20t-MuiPagination-ul {
+    justify-content: end;
+}

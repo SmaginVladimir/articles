@@ -81,6 +81,8 @@ export default function Users() {
             <Typography gutterBottom variant="h3" align="center">
                 Users
             </Typography>
+            <Button onClick={() => navigate('/admin/user/added')}
+                    color="inherit">New User</Button>
             <div style={{height: 400, width: '100%'}}>
                 {isLoading ?
                     <Ring
