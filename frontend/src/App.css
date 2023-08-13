@@ -1,0 +1,50 @@
+.form-style p{
+    margin-bottom: 15px
+}
+
+
+.link {
+    background-color: #00a699;
+    color: white;
+    position: relative;
+    text-decoration: none;
+    text-transform: uppercase;
+    width: 118px;
+    padding: 10px 20px;
+    border-radius: 10px;
+    max-width: 100%;
+}
+
+
+.link:hover {
+    background-color: #4867d3;
+}
+
+.link:active {
+    box-shadow: none;
+    top: 5px;
+    background: #1a202c;
+}
+
+.link:active {
+    box-shadow: none;
+    top: 5px;
+}
+
+.article{
+    text-align: center;
+    margin-top: 90px;
+}
+
+.main, test {
+    display: flex;
+}
+
+.article-card {
+    height: 100%;
+}
+
+.css-1wvake5 {
+    height: 100%;
+}
+
