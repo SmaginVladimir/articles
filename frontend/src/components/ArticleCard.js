@@ -6,13 +6,21 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import {Card} from "@mui/material";
 import {useNavigate} from "react-router-dom";
+import {API_BASE_URL, INSTANCE} from "../config";
 
 export default function ArticleCard(props) {
     const navigate = useNavigate();
 
 
-    function deleteArticle() {
-
+    function deleteArticle(articleId) {
+        INSTANCE.delete(API_BASE_URL + `/admin/article-delete/${articleId}`, {}, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+            }
+        }).then(() => {
+            props.articleFilter(articleId);
+        });
     }
 
 
@@ -32,7 +40,7 @@ export default function ArticleCard(props) {
             <CardActions>
                 <Button size="small"
                         onClick={() => navigate('/admin/article/edit/' + props.article.id)}>Изменить</Button>
-                <Button size="small">Удалить</Button>
+                <Button size="small" onClick={() => deleteArticle(props.article.id)}>Удалить</Button>
             </CardActions>
         </Card>
     );

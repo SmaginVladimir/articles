@@ -1,4 +1,4 @@
-.form-style p{
+.form-style p {
     margin-bottom: 15px
 }
 
@@ -31,7 +31,7 @@
     top: 5px;
 }
 
-.article{
+.article {
     text-align: center;
     margin-top: 90px;
 }
@@ -46,5 +46,13 @@
 
 .css-1wvake5 {
     height: 100%;
+}
+
+.search {
+    margin-top: 17px;
+}
+
+.article.search {
+    margin-top: 0;
 }
 

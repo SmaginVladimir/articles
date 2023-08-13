@@ -150,9 +150,9 @@ const ArticleForm = () => {
 
         const putArticle = async () => {
             let updatedImage = formData.image;
-            let updatedFormData = formData;
+            let updatedFormData = {...formData};
             let headers = {
-                'Content-Type': 'multipart/form-data',
+                'Content-Type': 'multipart/form-data/',
                 'Authorization': `Bearer ${localStorage.getItem('access_token')}`
             };
             if (typeof updatedImage === 'string') {
@@ -190,7 +190,6 @@ const ArticleForm = () => {
                         'Authorization': `Bearer ${localStorage.getItem('access_token')}`
                     },
                     processData: false,
-                    contentType: false
                 });
                 setMessage(res.data.message);
                 setTimeout(() => {
