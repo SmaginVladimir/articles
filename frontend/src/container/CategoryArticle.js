@@ -2,7 +2,7 @@ import React, {useCallback, useEffect, useState} from 'react';
 import {API_BASE_URL, INSTANCE} from "../config";
 import {useParams} from "react-router-dom";
 import SidebarMenu from "../components/SidebarMenu";
-import {Container, Grid} from "@mui/material";
+import {Container, Grid, Pagination} from "@mui/material";
 import {Ring} from "@uiball/loaders";
 import ArticleCard from "../components/ArticleCard";
 
@@ -11,17 +11,27 @@ const CategoryArticle = () => {
     const [articles, setArticles] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const categoryId = useParams().id;
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
 
 
     useEffect(() => {
-        addArticles();
-    }, []);
+        void addArticles(currentPage);
+    }, [currentPage]);
 
-    const addArticles = useCallback(async () => {
+    const addArticles = useCallback(async (page) => {
         try {
             setIsLoading(true);
-            const response = await INSTANCE.get(API_BASE_URL + `/articles/category/${categoryId}/all`);
+            const response = await INSTANCE.get(API_BASE_URL + `/articles/category/${categoryId}/9`, {
+                params: {
+                    page: page
+                }
+            });
+            const meta = response.data.meta;
+            const totalPages = meta.last_page;
             setArticles(response.data.data);
+            setCurrentPage(meta.current_page);
+            setTotalPages(totalPages);
             setIsLoading(false);
         } catch (e) {
             setIsLoading(true);
@@ -49,6 +59,14 @@ const CategoryArticle = () => {
                         </Grid>
                     }
                 </div>
+                {totalPages > 1 && (
+                    <Pagination className={'page'}
+                                variant="outlined" shape="rounded"
+                                count={totalPages}
+                                page={currentPage}
+                                onChange={(event, value) => setCurrentPage(value)}
+                    />
+                )}
             </Container>
         </div>
     );

@@ -51,7 +51,7 @@ class ArticleService
         if ($category) {
             $articles = $category->articles()->orderBy('order');
             if ($page != 'all') {
-                return ArticleResource::collection($articles->simplePaginate($page));
+                return ArticleResource::collection($articles->paginate($page));
             }
             return ArticleResource::collection($articles->get());
         }
