@@ -45,18 +45,19 @@ class ArticleController extends Controller
     /**
      * @param int $id
      * @param int|string $page
-     * @return AnonymousResourceCollection
+     * @return JsonResponse|AnonymousResourceCollection
      */
-    public function articlesAllByCategoryId(int $id, int|string $page): AnonymousResourceCollection
+    public function articlesAllByCategoryId(int $id, int|string $page): JsonResponse|AnonymousResourceCollection
     {
         return $this->articleService->articlesAllByCategoryId($id, $page);
     }
 
+
     /**
      * @param string $slug
-     * @return ArticleResource
+     * @return ArticleResource|JsonResponse
      */
-    public function searchArticleBySlug(string $slug): ArticleResource
+    public function searchArticleBySlug(string $slug): ArticleResource|JsonResponse
     {
         return $this->articleService->searchArticleBySlug($slug);
     }
