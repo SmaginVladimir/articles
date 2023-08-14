@@ -1,11 +1,12 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {alpha, Container, Grid, InputBase, Pagination, Stack, styled} from "@mui/material";
+import {alpha, Container, Grid, InputBase, Pagination, Stack, styled, Typography} from "@mui/material";
 import ArticleCard from "../components/ArticleCard";
 import {Ring} from "@uiball/loaders";
 import {API_BASE_URL, INSTANCE} from "../config";
 import SidebarMenu from "../components/SidebarMenu";
 import Button from "@mui/material/Button";
 import SearchIcon from "@mui/icons-material/Search";
+import Sorted from "../components/Sorted";
 
 
 const Search = styled('div')(({theme}) => ({
@@ -59,10 +60,15 @@ const Article = () => {
     const [search, setSearch] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
+    const [message, setMessage] = useState('');
+    const [sort, setSort] = useState('');
 
 
     useEffect(() => {
         void addArticles(currentPage);
+        if (sort) {
+            sortedArticles(sort);
+        }
     }, [currentPage]);
 
     const addArticles = useCallback(async (page) => {
@@ -91,13 +97,18 @@ const Article = () => {
 
     const check = async () => {
         try {
-            setIsLoading(true);
             const response = await INSTANCE.get(API_BASE_URL + `/article-slug/${search}`);
             setArticles([response.data.data]);
             setSearch('');
-            setIsLoading(false);
         } catch (e) {
-            setIsLoading(true);
+            setMessage('Ничего не нашлось... Сейчас будут все статьи');
+            setArticles([]);
+            setTotalPages(0);
+            setSearch('');
+            setTimeout(() => {
+                setMessage('');
+                void addArticles(currentPage);
+            }, 2000)
         }
     }
 
@@ -105,27 +116,68 @@ const Article = () => {
         setSearch(e.target.value);
     }
 
+    const sortedArticles = (sort) => {
+        setSort(sort);
+        let sortedArray = [...articles];
+        switch (sort) {
+            case 'id':
+                sortedArray.sort((a, b) => a.id - b.id);
+                break;
+            case 'name':
+                sortedArray.sort((a, b) => a.name.localeCompare(b.name));
+                break;
+            case 'slug':
+                sortedArray.sort((a, b) => a.slug.localeCompare(b.slug));
+                break;
+            case 'category':
+                sortedArray.sort((a, b) => a.category.id - b.category.id);
+                break;
+            case 'content':
+                sortedArray.sort((a, b) => a.content.localeCompare(b.content));
+                break;
+            case 'order':
+                sortedArray.sort((a, b) => a.order - b.order);
+                break;
+            case 'create':
+                sortedArray.sort((a, b) => new Date(a.create).getTime() - new Date(b.create).getTime());
+                break;
+            case 'update':
+                sortedArray.sort((a, b) => new Date(a.update).getTime() - new Date(b.update).getTime());
+                break;
+        }
+        console.log(sortedArray);
+        setArticles(sortedArray);
+    }
+
 
     return (
         <div className={'main'}>
             <SidebarMenu/>
             <Container>
-                <Search className={'search'}>
-                    <StyledInputBase
-                        placeholder="Search…"
-                        inputProps={{'aria-label': 'search'}}
-                        onChange={checkIn}
-                        value={search}
-                    />
+                <div className={'search'}>
+                    <Search>
+                        <StyledInputBase
+                            placeholder="Search…"
+                            inputProps={{'aria-label': 'search'}}
+                            onChange={checkIn}
+                            value={search}
+                        />
 
-                    <Button onClick={check} color="inherit">
-                        <SearchIconWrapper>
-                            <SearchIcon/>
-                        </SearchIconWrapper>
-                    </Button>
+                        <Button onClick={check} color="inherit">
+                            <SearchIconWrapper>
+                                <SearchIcon/>
+                            </SearchIconWrapper>
+                        </Button>
 
-                </Search>
+                    </Search>
+                    <Sorted sorted={sortedArticles}/>
+                </div>
                 <div className={'article search'}>
+                    {message &&
+                    <Typography gutterBottom variant="h5" align="center">
+                        {message}
+                    </Typography>
+                    }
                     {isLoading ?
                         <Ring
                             size={70}

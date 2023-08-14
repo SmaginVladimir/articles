@@ -50,6 +50,7 @@
 
 .search {
     margin-top: 17px;
+    display: flex;
 }
 
 .article.search {
