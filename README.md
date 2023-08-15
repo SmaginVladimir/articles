@@ -2,6 +2,7 @@
 composer install
 php artisan migrate
 php artisan db:seed
+php artisan storage:link 
 php artisan serve
 Дальше перейти в директорию frontend и выполнить следующие команды:
 npm install
