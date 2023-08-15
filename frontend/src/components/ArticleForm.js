@@ -150,27 +150,22 @@ const ArticleForm = () => {
 
         const putArticle = async () => {
             let updatedImage = formData.image;
-            let updatedFormData = {...formData};
-            let headers = {
-                'Content-Type': 'multipart/form-data/',
-                'Authorization': `Bearer ${localStorage.getItem('access_token')}`
-            };
+            let updatedFormData = {...formData, _method: 'PUT'};
             if (typeof updatedImage === 'string') {
                 if (updatedImage.includes('http://127.0.0.1:8000/storage/')) {
                     updatedImage = updatedImage.replace('http://127.0.0.1:8000/storage/', "");
                 }
-                headers = {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${localStorage.getItem('access_token')}`
-                };
                 updatedFormData = {
-                    ...formData,
+                    ...updatedFormData,
                     image: updatedImage
                 };
             }
             try {
-                const res = await INSTANCE.put(API_BASE_URL + '/admin/article/' + articleId, updatedFormData, {
-                    headers: headers,
+                const res = await INSTANCE.post(API_BASE_URL + '/admin/article/' + articleId, updatedFormData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                        'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+                    },
                     processData: false,
                 });
                 setMessage(res.data.message);

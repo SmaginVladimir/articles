@@ -155,7 +155,7 @@ const UserForm = () => {
                 });
                 setMessage(res.data.message);
                 setTimeout(() => {
-                    navigate('/');
+                    navigate('/admin/users');
                 }, 1500)
             } catch (e) {
                 console.log('Что-то не так')

@@ -134,7 +134,7 @@ const CategoryForm = () => {
                 });
                 setMessage(res.data.message);
                 setTimeout(() => {
-                    navigate('/');
+                    navigate('/admin/categories');
                 }, 1500)
             } catch (e) {
                 console.log('Что-то не так')

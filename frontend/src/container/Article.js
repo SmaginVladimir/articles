@@ -145,7 +145,6 @@ const Article = () => {
                 sortedArray.sort((a, b) => new Date(a.update).getTime() - new Date(b.update).getTime());
                 break;
         }
-        console.log(sortedArray);
         setArticles(sortedArray);
     }
 
